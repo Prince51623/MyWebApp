@@ -1,0 +1,58 @@
+@model MyWebApp.Models.Room
+
+@{
+    ViewData["Title"] = "Room Details";
+}
+
+<div class="container mt-4">
+    <h1>Room @Model.RoomNumber Details</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h4 class="card-title">@Model.RoomType Room</h4>
+                    <p class="card-text">@Model.Description</p>
+                    
+                    <div class="mt-4">
+                        <h5>Room Information</h5>
+                        <table class="table">
+                            <tr>
+                                <th>Room Number:</th>
+                                <td>@Model.RoomNumber</td>
+                            </tr>
+                            <tr>
+                                <th>Room Type:</th>
+                                <td>@Model.RoomType</td>
+                            </tr>
+                            <tr>
+                                <th>Price Per Night (USD):</th>
+                                <td>$@Model.PricePerNight</td>
+                            </tr>
+                            <tr>
+                                <th>Price Per Night (INR):</th>
+                                <td>₹@Model.PriceInINR</td>
+                            </tr>
+                            <tr>
+                                <th>Status:</th>
+                                <td>
+                                    <span class="badge bg-@(Model.IsAvailable ? "success" : "danger")">
+                                        @(Model.IsAvailable ? "Available" : "Occupied")
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                @if (Model.IsAvailable)
+                {
+                    <a asp-action="CreateBooking" asp-route-roomNumber="@Model.RoomNumber" class="btn btn-primary">Book Now</a>
+                }
+                <a asp-action="Rooms" class="btn btn-secondary">Back to Rooms</a>
+            </div>
+        </div>
+    </div>
+</div>

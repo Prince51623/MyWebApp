@@ -1,0 +1,41 @@
+@model IEnumerable<MyWebApp.Models.Guest>
+
+@{
+    ViewData["Title"] = "Guests";
+}
+
+<h1>Hotel Guests</h1>
+
+<p>
+    <a asp-action="AddGuest" class="btn btn-primary">Add New Guest</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var guest in Model)
+            {
+                <tr>
+                    <td>@guest.Id</td>
+                    <td>@guest.Name</td>
+                    <td>@guest.Email</td>
+                    <td>@guest.PhoneNumber</td>
+                    <td>@guest.Address</td>
+                    <td>
+                        <a asp-action="GuestBookings" asp-route-id="@guest.Id" class="btn btn-info btn-sm">View Bookings</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

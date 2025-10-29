@@ -1,0 +1,52 @@
+@model IEnumerable<MyWebApp.Models.Booking>
+
+@{
+    ViewData["Title"] = "Bookings";
+}
+
+<h1>Hotel Bookings</h1>
+
+<p>
+    <a asp-action="CreateBooking" class="btn btn-primary">Create New Booking</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Guest Name</th>
+                <th>Room Number</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.Id</td>
+                    <td>@(booking.Guest?.Name ?? "N/A")</td>
+                    <td>@booking.RoomNumber</td>
+                    <td>@booking.CheckInDate.ToShortDateString()</td>
+                    <td>@booking.CheckOutDate.ToShortDateString()</td>
+                    <td>$@booking.TotalPrice (₹@booking.TotalPriceInINR)</td>
+                    <td>@booking.Status</td>
+                    <td>
+                        @if (booking.Status != "Cancelled")
+                        {
+                            <form asp-action="CancelBooking" asp-route-id="@booking.Id" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                    Cancel
+                                </button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

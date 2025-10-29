@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container mt-4">
+    <!-- Hero Section -->
+    <div class="jumbotron bg-light p-5 rounded">
+        <h1 class="display-4">Hotel Management System</h1>
+        <p class="lead">Welcome to your comprehensive hotel management solution. Manage rooms, guests, and bookings with ease.</p>
+        <hr class="my-4">
+        <p>Get started by exploring our features below.</p>
+    </div>
+
+    <!-- Quick Access Cards -->
+    <div class="row mt-5">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">
+                        <i class="bi bi-door-open fs-1"></i>
+                        <br>Rooms
+                    </h3>
+                    <p class="card-text">Manage hotel rooms, view availability, and room details.</p>
+                    <a asp-controller="Hotel" asp-action="Rooms" class="btn btn-primary">Manage Rooms</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">
+                        <i class="bi bi-people fs-1"></i>
+                        <br>Guests
+                    </h3>
+                    <p class="card-text">Add new guests, view guest information, and manage guest records.</p>
+                    <a asp-controller="Hotel" asp-action="Guests" class="btn btn-primary">Manage Guests</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">
+                        <i class="bi bi-calendar-check fs-1"></i>
+                        <br>Bookings
+                    </h3>
+                    <p class="card-text">Create new bookings, view current bookings, and manage reservations.</p>
+                    <a asp-controller="Hotel" asp-action="Bookings" class="btn btn-primary">Manage Bookings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Hotel" asp-action="CreateBooking" class="btn btn-outline-primary">Create New Booking</a>
+                        <a asp-controller="Hotel" asp-action="AddGuest" class="btn btn-outline-primary">Register New Guest</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">System Information</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Current Date:</strong> @DateTime.Now.ToString("MMMM dd, yyyy")<br>
+                        <strong>System Version:</strong> 1.0.0<br>
+                        <strong>Last Updated:</strong> October 28, 2025
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Add Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+}
