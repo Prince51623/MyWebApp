@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "EqVr03i5eTHfM35LjPxiv15Zbp9mRf1o2dOj5SEP7Uo=",
+  "Hash": "1RyRVeEKpl8EjJGivw2yHFhE08SrZKXxmqfNSphypIU=",
   "Source": "MyWebApp",
   "BasePath": "_content/MyWebApp",
   "Mode": "Default",
@@ -53,6 +53,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\Ved sheta\\Desktop\\hotel\\MyWebApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MyWebApp.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\Ved sheta\\Desktop\\hotel\\MyWebApp\\wwwroot\\css\\hotel.css",
+      "SourceId": "MyWebApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Ved sheta\\Desktop\\hotel\\MyWebApp\\wwwroot\\",
+      "BasePath": "_content/MyWebApp",
+      "RelativePath": "css/hotel.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\hotel.css"
     },
     {
       "Identity": "C:\\Users\\Ved sheta\\Desktop\\hotel\\MyWebApp\\wwwroot\\css\\site.css",

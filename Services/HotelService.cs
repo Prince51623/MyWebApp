@@ -85,6 +85,109 @@ namespace MyWebApp.Services
             return false;
         }
 
+        public (bool success, string message) CheckInGuest(int bookingId)
+        {
+            if (!_bookings.TryGetValue(bookingId, out var booking))
+            {
+                return (false, "Booking not found.");
+            }
+
+            if (booking.Status == "Cancelled")
+            {
+                return (false, "Cannot check in a cancelled booking.");
+            }
+
+            if (booking.IsCheckedIn)
+            {
+                return (false, "Guest is already checked in.");
+            }
+
+            if (booking.IsCheckedOut)
+            {
+                return (false, "Guest has already checked out.");
+            }
+
+            // Verify check-in date
+            if (DateTime.Now.Date < booking.CheckInDate.Date)
+            {
+                return (false, "Cannot check in before the scheduled check-in date.");
+            }
+
+            booking.IsCheckedIn = true;
+            booking.Status = "CheckedIn";
+            booking.ActualCheckInDate = DateTime.Now;
+            
+            return (true, "Guest checked in successfully.");
+        }
+
+        public (bool success, string message, decimal finalAmount) CheckOutGuest(int bookingId)
+        {
+            if (!_bookings.TryGetValue(bookingId, out var booking))
+            {
+                return (false, "Booking not found.", 0);
+            }
+
+            if (booking.Status == "Cancelled")
+            {
+                return (false, "Cannot check out a cancelled booking.", 0);
+            }
+
+            if (!booking.IsCheckedIn)
+            {
+                return (false, "Guest has not checked in yet.", 0);
+            }
+
+            if (booking.IsCheckedOut)
+            {
+                return (false, "Guest has already checked out.", 0);
+            }
+
+            booking.IsCheckedOut = true;
+            booking.Status = "CheckedOut";
+            booking.ActualCheckOutDate = DateTime.Now;
+            
+            var room = GetRoom(booking.RoomNumber);
+            if (room != null)
+            {
+                room.IsAvailable = true;
+            }
+
+            // Calculate any late checkout fees
+            if (DateTime.Now.Date > booking.CheckOutDate.Date)
+            {
+                int extraDays = (DateTime.Now.Date - booking.CheckOutDate.Date).Days;
+                booking.AdditionalCharges += extraDays * (room?.PricePerNight ?? 0);
+            }
+
+            return (true, "Guest checked out successfully.", booking.FinalTotal);
+        }
+
+        public IEnumerable<Booking> GetBookingsForCheckIn()
+        {
+            var today = DateTime.Now.Date;
+            return _bookings.Values.Where(b => 
+                b.Status == "Reserved" && 
+                !b.IsCheckedIn && 
+                !b.IsCheckedOut && 
+                b.CheckInDate.Date <= today);
+        }
+
+        public IEnumerable<Booking> GetCurrentlyStayingGuests()
+        {
+            return _bookings.Values.Where(b => 
+                b.IsCheckedIn && 
+                !b.IsCheckedOut && 
+                b.Status == "CheckedIn");
+        }
+
+        public void AddAdditionalCharges(int bookingId, decimal amount, string description)
+        {
+            if (_bookings.TryGetValue(bookingId, out var booking))
+            {
+                booking.AdditionalCharges += amount;
+            }
+        }
+
         public IEnumerable<Booking> GetAllBookings() => _bookings.Values;
         public Booking? GetBooking(int id) => _bookings.GetValueOrDefault(id);
         public IEnumerable<Booking> GetGuestBookings(int guestId) => 

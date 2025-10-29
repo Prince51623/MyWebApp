@@ -1,14 +1,23 @@
 @model IEnumerable<MyWebApp.Models.Guest>
 
 @{
-    ViewData["Title"] = "Guests";
+    ViewData["Title"] = "Our Guests";
 }
 
-<h1>Hotel Guests</h1>
+<div class="container mt-4">
+    <h1>Crystal Castle Hotel Guests</h1>
 
-<p>
-    <a asp-action="AddGuest" class="btn btn-primary">Add New Guest</a>
-</p>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <p>
+        <a asp-action="AddGuest" class="btn btn-primary">Add New Guest</a>
+    </p>
 
 <div class="table-responsive">
     <table class="table">

@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\MyWebApp.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\Ved sheta\\Desktop\\hotel\\MyWebApp\\wwwroot\\css\\hotel.css",
+      "PackagePath": "staticwebassets\\css\\hotel.css"
+    },
+    {
       "Id": "C:\\Users\\Ved sheta\\Desktop\\hotel\\MyWebApp\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

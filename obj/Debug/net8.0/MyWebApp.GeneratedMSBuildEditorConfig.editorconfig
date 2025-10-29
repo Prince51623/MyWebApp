@@ -34,8 +34,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxcQm9va2luZ3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Ved sheta/Desktop/hotel/MyWebApp/Views/Hotel/CheckIn.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxcQ2hlY2tJbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ved sheta/Desktop/hotel/MyWebApp/Views/Hotel/CheckOut.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxcQ2hlY2tPdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Ved sheta/Desktop/hotel/MyWebApp/Views/Hotel/CreateBooking.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxcQ3JlYXRlQm9va2luZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ved sheta/Desktop/hotel/MyWebApp/Views/Hotel/GuestBookings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxcR3Vlc3RCb29raW5ncy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Ved sheta/Desktop/hotel/MyWebApp/Views/Hotel/Guests.cshtml]

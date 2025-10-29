@@ -4,7 +4,7 @@
     ViewData["Title"] = "Bookings";
 }
 
-<h1>Hotel Bookings</h1>
+<h1>Crystal Castle Hotel Bookings</h1>
 
 <p>
     <a asp-action="CreateBooking" class="btn btn-primary">Create New Booking</a>
@@ -34,9 +34,20 @@
                     <td>@booking.CheckInDate.ToShortDateString()</td>
                     <td>@booking.CheckOutDate.ToShortDateString()</td>
                     <td>$@booking.TotalPrice (₹@booking.TotalPriceInINR)</td>
-                    <td>@booking.Status</td>
                     <td>
-                        @if (booking.Status != "Cancelled")
+                        @if (booking.IsCheckedOut)
+                        {
+                            <span class="badge bg-info">Checked Out (@booking.ActualCheckOutDate?.ToShortDateString())</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-@(booking.Status == "Cancelled" ? "danger" : booking.Status == "Completed" ? "success" : "primary")">
+                                @booking.Status
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        @if (booking.Status != "Cancelled" && !booking.IsCheckedOut)
                         {
                             <form asp-action="CancelBooking" asp-route-id="@booking.Id" method="post" style="display: inline;">
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to cancel this booking?')">

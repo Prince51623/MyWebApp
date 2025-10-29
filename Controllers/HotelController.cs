@@ -46,8 +46,28 @@ namespace MyWebApp.Controllers
             if (!ModelState.IsValid)
                 return View(guest);
 
-            _hotelService.AddGuest(guest);
-            return RedirectToAction(nameof(Guests));
+            try
+            {
+                _hotelService.AddGuest(guest);
+                TempData["SuccessMessage"] = "Guest added successfully!";
+                return RedirectToAction(nameof(Guests));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error adding guest. Please try again.");
+                return View(guest);
+            }
+        }
+
+        public IActionResult GuestBookings(int id)
+        {
+            var guest = _hotelService.GetGuest(id);
+            if (guest == null)
+                return NotFound();
+
+            var bookings = _hotelService.GetGuestBookings(id);
+            ViewBag.Guest = guest;
+            return View(bookings);
         }
 
         // Booking related actions
@@ -96,6 +116,104 @@ namespace MyWebApp.Controllers
                 return NotFound();
             
             return RedirectToAction(nameof(Bookings));
+        }
+
+        // Check-in related actions
+        public IActionResult CheckIn()
+        {
+            try
+            {
+                var todayBookings = _hotelService.GetBookingsForCheckIn();
+                return View(todayBookings);
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "An error occurred while loading check-in data.";
+                return View(Enumerable.Empty<Booking>());
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ProcessCheckIn(int id)
+        {
+            try
+            {
+                var (success, message) = _hotelService.CheckInGuest(id);
+                if (!success)
+                {
+                    TempData["ErrorMessage"] = message;
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = message;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred during check-in process.";
+            }
+
+            return RedirectToAction(nameof(CheckIn));
+        }
+
+        // Check-out related actions
+        public IActionResult CheckOut()
+        {
+            try
+            {
+                var currentGuests = _hotelService.GetCurrentlyStayingGuests();
+                return View(currentGuests);
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "An error occurred while loading check-out data.";
+                return View(Enumerable.Empty<Booking>());
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ProcessCheckOut(int id)
+        {
+            try
+            {
+                var (success, message, finalAmount) = _hotelService.CheckOutGuest(id);
+                if (!success)
+                {
+                    TempData["ErrorMessage"] = message;
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = $"Check-out successful. Final amount: ${finalAmount:F2} (₹{finalAmount * 83:F2})";
+                }
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "An error occurred during check-out process.";
+            }
+
+            return RedirectToAction(nameof(CheckOut));
+        }
+
+        [HttpPost]
+        public IActionResult AddCharges(int bookingId, decimal amount)
+        {
+            try
+            {
+                if (amount <= 0)
+                {
+                    TempData["ErrorMessage"] = "Amount must be greater than zero.";
+                    return RedirectToAction(nameof(CheckOut));
+                }
+
+                _hotelService.AddAdditionalCharges(bookingId, amount, "Additional services");
+                TempData["SuccessMessage"] = $"Additional charges of ${amount:F2} added successfully.";
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "An error occurred while adding charges.";
+            }
+
+            return RedirectToAction(nameof(CheckOut));
         }
     }
 }

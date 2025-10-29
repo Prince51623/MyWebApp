@@ -3,16 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Hotel Management System</title>
+    <title>@ViewData["Title"] - Crystal Castle Hotel</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/hotel.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MyWebApp.styles.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Hotel Management</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Crystal Castle Hotel</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,6 +30,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Hotel" asp-action="Bookings">Bookings</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Hotel" asp-action="CheckIn">Check-in</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Hotel" asp-action="CheckOut">Check-out</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -41,7 +49,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - Hotel Management System - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - Crystal Castle Hotel - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
