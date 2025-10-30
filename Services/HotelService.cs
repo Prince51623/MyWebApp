@@ -46,7 +46,7 @@ namespace MyWebApp.Services
             _guests.TryAdd(guest.Id, guest);
             return guest;
         }
-        
+
         public Guest? GetGuest(int id) => _guests.GetValueOrDefault(id);
         public IEnumerable<Guest> GetAllGuests() => _guests.Values;
 
@@ -60,13 +60,13 @@ namespace MyWebApp.Services
             booking.Room = room;
             booking.Guest = GetGuest(booking.GuestId);
             booking.TotalPrice = CalculateTotalPrice(booking.CheckInDate, booking.CheckOutDate, room.PricePerNight);
-            
+
             if (_bookings.TryAdd(booking.Id, booking))
             {
                 room.IsAvailable = false;
                 return booking;
             }
-            
+
             return null;
         }
 
@@ -107,16 +107,18 @@ namespace MyWebApp.Services
                 return (false, "Guest has already checked out.");
             }
 
-            // Verify check-in date
-            if (DateTime.Now.Date < booking.CheckInDate.Date)
+            // Make sure the room exists and update its status
+            var room = GetRoom(booking.RoomNumber);
+            if (room == null)
             {
-                return (false, "Cannot check in before the scheduled check-in date.");
+                return (false, "Room not found.");
             }
 
             booking.IsCheckedIn = true;
             booking.Status = "CheckedIn";
             booking.ActualCheckInDate = DateTime.Now;
-            
+            room.IsAvailable = false; // Ensure room is marked as occupied
+
             return (true, "Guest checked in successfully.");
         }
 
@@ -145,7 +147,7 @@ namespace MyWebApp.Services
             booking.IsCheckedOut = true;
             booking.Status = "CheckedOut";
             booking.ActualCheckOutDate = DateTime.Now;
-            
+
             var room = GetRoom(booking.RoomNumber);
             if (room != null)
             {
@@ -165,18 +167,19 @@ namespace MyWebApp.Services
         public IEnumerable<Booking> GetBookingsForCheckIn()
         {
             var today = DateTime.Now.Date;
-            return _bookings.Values.Where(b => 
-                b.Status == "Reserved" && 
-                !b.IsCheckedIn && 
-                !b.IsCheckedOut && 
+            // Include all non-checked-in bookings that aren't cancelled or checked out
+            return _bookings.Values.Where(b =>
+                !b.IsCheckedIn &&
+                !b.IsCheckedOut &&
+                b.Status != "Cancelled" &&
                 b.CheckInDate.Date <= today);
         }
 
         public IEnumerable<Booking> GetCurrentlyStayingGuests()
         {
-            return _bookings.Values.Where(b => 
-                b.IsCheckedIn && 
-                !b.IsCheckedOut && 
+            return _bookings.Values.Where(b =>
+                b.IsCheckedIn &&
+                !b.IsCheckedOut &&
                 b.Status == "CheckedIn");
         }
 
@@ -190,7 +193,7 @@ namespace MyWebApp.Services
 
         public IEnumerable<Booking> GetAllBookings() => _bookings.Values;
         public Booking? GetBooking(int id) => _bookings.GetValueOrDefault(id);
-        public IEnumerable<Booking> GetGuestBookings(int guestId) => 
+        public IEnumerable<Booking> GetGuestBookings(int guestId) =>
             _bookings.Values.Where(b => b.GuestId == guestId);
 
         private static decimal CalculateTotalPrice(DateTime checkIn, DateTime checkOut, decimal pricePerNight)
