@@ -52,7 +52,7 @@ namespace MyWebApp.Controllers
                 TempData["SuccessMessage"] = "Guest added successfully!";
                 return RedirectToAction(nameof(Guests));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ModelState.AddModelError("", "Error adding guest. Please try again.");
                 return View(guest);
@@ -79,7 +79,7 @@ namespace MyWebApp.Controllers
 
         public IActionResult CreateBooking(int? roomNumber = null)
         {
-            ViewBag.AvailableRooms = roomNumber.HasValue 
+            ViewBag.AvailableRooms = roomNumber.HasValue
                 ? _hotelService.GetAvailableRooms().Where(r => r.RoomNumber == roomNumber)
                 : _hotelService.GetAvailableRooms();
             ViewBag.Guests = _hotelService.GetAllGuests();
@@ -114,7 +114,7 @@ namespace MyWebApp.Controllers
             var result = _hotelService.CancelBooking(id);
             if (!result)
                 return NotFound();
-            
+
             return RedirectToAction(nameof(Bookings));
         }
 
@@ -139,6 +139,19 @@ namespace MyWebApp.Controllers
         {
             try
             {
+                if (id <= 0)
+                {
+                    TempData["ErrorMessage"] = "Invalid booking ID.";
+                    return RedirectToAction(nameof(CheckIn));
+                }
+
+                var booking = _hotelService.GetBooking(id);
+                if (booking == null)
+                {
+                    TempData["ErrorMessage"] = "Booking not found.";
+                    return RedirectToAction(nameof(CheckIn));
+                }
+
                 var (success, message) = _hotelService.CheckInGuest(id);
                 if (!success)
                 {
@@ -149,7 +162,7 @@ namespace MyWebApp.Controllers
                     TempData["SuccessMessage"] = message;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["ErrorMessage"] = "An error occurred during check-in process.";
             }
@@ -178,6 +191,19 @@ namespace MyWebApp.Controllers
         {
             try
             {
+                if (id <= 0)
+                {
+                    TempData["ErrorMessage"] = "Invalid booking ID.";
+                    return RedirectToAction(nameof(CheckOut));
+                }
+
+                var booking = _hotelService.GetBooking(id);
+                if (booking == null)
+                {
+                    TempData["ErrorMessage"] = "Booking not found.";
+                    return RedirectToAction(nameof(CheckOut));
+                }
+
                 var (success, message, finalAmount) = _hotelService.CheckOutGuest(id);
                 if (!success)
                 {
