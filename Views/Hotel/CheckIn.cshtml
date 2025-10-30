@@ -56,6 +56,7 @@
                             <td>$@booking.TotalPrice (₹@booking.TotalPriceInINR)</td>
                             <td>
                                 <form asp-action="ProcessCheckIn" asp-route-id="@booking.Id" method="post" style="display: inline;">
+                                    @Html.AntiForgeryToken()
                                     <button type="submit" class="btn btn-success btn-sm" 
                                             onclick="return confirm('Are you sure you want to check in this guest?')">
                                         Process Check-in
@@ -72,9 +73,12 @@
 
 @section Scripts {
     <script>
-        // Auto-hide alerts after 5 seconds
+        // Auto-hide alerts after 5 seconds (Bootstrap 5 - avoid jQuery-dependent call)
         setTimeout(function () {
-            $('.alert').alert('close');
+            document.querySelectorAll('.alert').forEach(function (el) {
+                var bsAlert = bootstrap.Alert.getOrCreateInstance(el);
+                bsAlert.close();
+            });
         }, 5000);
     </script>
 }
