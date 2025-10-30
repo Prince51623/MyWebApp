@@ -134,6 +134,7 @@ namespace MyWebApp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ProcessCheckIn(int id)
         {
             try
@@ -172,6 +173,7 @@ namespace MyWebApp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ProcessCheckOut(int id)
         {
             try
@@ -195,6 +197,7 @@ namespace MyWebApp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddCharges(int bookingId, decimal amount)
         {
             try
